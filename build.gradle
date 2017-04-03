@@ -16,7 +16,7 @@ subprojects {
 
     apply plugin: 'java'
 
-    group ""
+    group projectGroup
     sourceCompatibility = jdkVersion
     targetCompatibility = jdkVersion
 
@@ -34,6 +34,60 @@ subprojects {
                 libraries.'logback-classic',
                 libraries.'jcl-over-slf4j',
                 libraries.'log4j-over-slf4j',
+
+                libraries."persistence-api",
+                libraries."validation-api",
+                libraries."jta",
+
+                libraries."mysql",
+                libraries."druid",
+
+                libraries."hibernate-validator",
+
+                // spring
+                libraries."spring-core",
+                libraries."spring-beans",
+                libraries."spring-jdbc",
+                libraries."spring-tx",
+                libraries."spring-context",
+                libraries."spring-context-support",
+
+                libraries."spring-orm",
+                libraries."spring-oxm",
+                libraries."spring-webmvc",
+                libraries."spring-jms",
+                libraries."spring-aspects",
+                libraries."spring-aop",
+
+                libraries."spring-websocket",
+                libraries."spring-messaging",
+
+                //myBatis
+                libraries."mybatis-core",
+                libraries."mybatis-spring",
+                //分页插件
+                libraries."pagehelper",
+                //通用Mapper
+                libraries."mapper",
+
+                //mail
+                libraries."mail",
+                libraries."aspectj",
+                libraries."fileupload",
+                libraries."jackson",
+
+                //slf4j
+                libraries."logback-classic",
+                libraries."logback-core",
+                libraries."jcl-over-slf4j",
+                libraries."log4j-over-slf4j",
+                libraries."slf4j-api",
+
+                // JSON
+                libraries."fastjson",
+
+                // Apache
+                libraries."commons-lang3",
         )
 
         testCompile (

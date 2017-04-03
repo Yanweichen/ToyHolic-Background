@@ -1,8 +1,7 @@
 archivesBaseName = 'web'
 
 apply plugin: 'war'
-apply plugin: "com.bmuschko.tomcat"
-apply plugin: 'com.bmuschko.tomcat-base'
+apply plugin: "org.akhikhl.gretty"
 
 buildscript {
     repositories {
@@ -12,7 +11,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath "com.bmuschko:gradle-tomcat-plugin:2.2.5"
+        classpath "gradle.plugin.org.akhikhl.gretty:gretty:1.4.2"
     }
 }
 
@@ -25,29 +24,15 @@ dependencies {
     compile(
             project(':common'),
             project(':core'),
-
-            libraries.'spring-webmvc',
-
     )
-
-    def tomcatVersion = '8.0.42'
-    tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
-           "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}",
-           "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}"
 }
 
-tomcat {
-    httpPort = 8090
-    httpsPort = 8091
-    enableSSL = true
-
-    users {
-        user {
-            username = 'yanweichen'
-            password = 'wanzzy521'
-            roles = ['developers', 'admin']
-        }
-    }
+gretty {
+    // supported values:
+    // 'jetty7', 'jetty8', 'jetty9', 'tomcat7', 'tomcat8'
+    servletContainer = 'tomcat8'
+    httpPort = 8091
+    contextPath = "/"
 }
 
 // 设置 snapshot war 版本号

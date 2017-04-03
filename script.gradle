@@ -48,7 +48,7 @@ ext {
         number++
         String strNumber
         if(number < 10){
-            strNumber = String.format("%03d", number)
+            strNumber = String.format("%04d", number)
         } else {
             strNumber = String.valueOf(number)
         }
