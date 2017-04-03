@@ -1,0 +1,51 @@
+import java.text.SimpleDateFormat
+
+ext {
+    /** 生成 manifest 的方法，在打 jar 包或者 war 包时候调用 */
+    defaultManifest = { Project project ->
+        return {
+            def buildTimeAndDate = new Date()
+            def buildDate = new SimpleDateFormat('yyyy-MM-dd').format(buildTimeAndDate)
+            def buildTime = new SimpleDateFormat('HH:mm').format(buildTimeAndDate)
+
+            def git_cmd = "git rev-parse HEAD"
+            def git_proc = git_cmd.execute()
+
+            attributes 'SCM-Revision': git_proc.text.trim()
+
+            attributes 'Built-By': System.properties['user.name']
+            attributes 'Created-By': System.properties['java.version'] + " (" + System.properties['java.vendor'] + " " + System.getProperty("java.vm.version") + ")"
+            attributes 'Build-Host': InetAddress.localHost.hostName
+            attributes 'Build-Date': buildDate
+            attributes 'Build-Time': buildTime
+            attributes 'Timestamp': String.valueOf(System.currentTimeMillis())
+            attributes 'Specification-Title': project.archivesBaseName
+            attributes 'Specification-Version': project.version
+            attributes 'Specification-Vendor': projectGroup
+            attributes 'Implementation-Title': project.archivesBaseName
+            attributes 'Implementation-Version': project.version
+            attributes 'Implementation-Vendor': projectGroup
+            attributes 'provider': 'gradle'
+        }
+    }
+
+    /**
+     * 子项目中调用，用于生成编译数字，此数字可以作为版本号的一个组成部分。
+     *
+     * 存储位置为子项目下的 build_number.data,此文件与子项目的 build.gradle 平级
+     */
+    buildNumberIncrease = { project ->
+        println ">> project path: ${project.projectDir}"
+
+        def _build_number_file = new File(project.projectDir, 'build_number.data')
+        def buildNumber = _build_number_file.text.toInteger()
+        println '>> Old build number: ' + _build_number_file.text
+        buildNumber++
+        println '>> New build number: ' + buildNumber
+
+        _build_number_file.text = buildNumber
+
+        return buildNumber
+
+    }
+}

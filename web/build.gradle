@@ -1,1 +1,107 @@
+archivesBaseName = 'web'
+version = '1.0.0'
+
 apply plugin: 'war'
+apply plugin: "com.bmuschko.tomcat"
+apply plugin: 'com.bmuschko.tomcat-base'
+
+buildscript {
+    repositories {
+        maven {
+            url mavenUrl
+        }
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.bmuschko:gradle-tomcat-plugin:2.2.5"
+    }
+}
+
+dependencies {
+    providedCompile(
+            libraries.'servlet-api',
+            libraries.'jsp-api'
+    )
+
+    compile(
+            project(':common'),
+            project(':core'),
+
+            libraries.'spring-webmvc',
+
+    )
+
+    def tomcatVersion = '8.0.42'
+    tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
+           "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}",
+           "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}"
+}
+
+tomcat {
+    httpPort = 8090
+    httpsPort = 8091
+    enableSSL = true
+
+    users {
+        user {
+            username = 'yanweichen'
+            password = 'wanzzy521'
+            roles = ['developers', 'admin']
+        }
+    }
+}
+
+// 设置 snapshot war 版本号
+// 格式为： project-web-1.1.0.123-SNAPSHOT.war
+task setSnapshotWarVersion {
+    doFirst {
+        println '== Snapshot begin....'
+        println '================================================='
+        def buildNumber = buildNumberIncrease(project)
+        version += '.' + buildNumber
+        version += '-SNAPSHOT'
+        println ">> new version: ${version}"
+        println ">> war: ${archivesBaseName}-${version}.war"
+        println '================================================='
+
+        war {
+            manifest {
+                defaultManifest(project)
+            }
+        }
+    }
+}
+
+// 编译 snapshot 版的 war 包
+task snapshot(dependsOn: ['setSnapshotWarVersion', 'war']) {
+    doLast {
+        println '== Snapshot WAR Generate Over'
+    }
+}
+
+// 设置 release 包的版本号
+// 格式为: project-web-1.1.0.123.war
+task setReleaseWarVersion {
+    doFirst {
+        println '== Release Begin...'
+        println '================================================='
+        def buildNumber = buildNumberIncrease(project)
+        version += '.' + buildNumber
+        archivesBaseName = projectName
+        println ">> new version: ${version}"
+        println ">> war: ${archivesBaseName}-${version}.war"
+        println '================================================='
+
+        war {
+            manifest {
+                defaultManifest(project)
+            }
+        }
+    }
+}
+
+task release(dependsOn: ['setReleaseWarVersion', 'war']) {
+    doLast {
+        println '== Release WAR Generate Over'
+    }
+}
