@@ -1,5 +1,4 @@
 archivesBaseName = 'web'
-version = '1.0.0'
 
 apply plugin: 'war'
 apply plugin: "com.bmuschko.tomcat"
@@ -57,8 +56,8 @@ task setSnapshotWarVersion {
     doFirst {
         println '== Snapshot begin....'
         println '================================================='
-        def buildNumber = buildNumberIncrease(project)
-        version += '.' + buildNumber
+        def buildVersion= getBuildVersion(project)
+        version = buildVersion
         version += '-SNAPSHOT'
         println ">> new version: ${version}"
         println ">> war: ${archivesBaseName}-${version}.war"
@@ -85,8 +84,8 @@ task setReleaseWarVersion {
     doFirst {
         println '== Release Begin...'
         println '================================================='
-        def buildNumber = buildNumberIncrease(project)
-        version += '.' + buildNumber
+        def buildVersion = getBuildVersion(project)
+        version = buildVersion
         archivesBaseName = projectName
         println ">> new version: ${version}"
         println ">> war: ${archivesBaseName}-${version}.war"

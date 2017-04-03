@@ -34,18 +34,32 @@ ext {
      *
      * 存储位置为子项目下的 build_number.data,此文件与子项目的 build.gradle 平级
      */
-    buildNumberIncrease = { project ->
-        println ">> project path: ${project.projectDir}"
+    getBuildVersion = { project ->
 
-        def _build_number_file = new File(project.projectDir, 'build_number.data')
-        def buildNumber = _build_number_file.text.toInteger()
-        println '>> Old build number: ' + _build_number_file.text
-        buildNumber++
-        println '>> New build number: ' + buildNumber
+        def localVersionFile = new File(project.projectDir, 'localVersion.data')
+        def localVersion = localVersionFile.text
 
-        _build_number_file.text = buildNumber
-
-        return buildNumber
+        String[] split = localVersion.split("\\.")
+        StringBuilder stringBuilder = new StringBuilder()
+        for (String s : split) {
+            stringBuilder.append(s)
+        }
+        Integer number = Integer.valueOf(stringBuilder.toString())
+        number++
+        String strNumber
+        if(number < 10){
+            strNumber = String.format("%03d", number)
+        } else {
+            strNumber = String.valueOf(number)
+        }
+        char[] chars = strNumber.toCharArray()
+        List<String> stringList = new ArrayList<>()
+        for (char aChar : chars) {
+            stringList.add(String.valueOf(aChar))
+        }
+        String formatVersion = String.join(".", stringList)
+        localVersionFile.text = formatVersion
+        return formatVersion
 
     }
 }
