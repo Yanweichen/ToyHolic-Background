@@ -1,24 +1,109 @@
 allprojects {
     apply plugin: 'idea'
 }
-subprojects {
-    apply plugin: 'java'
-    apply plugin: 'project-report'
 
-    group 'com.toy'
-    version '1.0-SNAPSHOT'
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+ext {
+    mavenUrl = "http://maven.aliyun.com/nexus/content/groups/public"
+    jdkVersion = 1.8
+    projectGroup = "com.ywc"
+    projectName = "ToyHolic"
+}
+
+apply from: 'dependency.gradle'
+apply from: 'script.gradle'
+
+subprojects {
+
+    apply plugin: 'java'
+
+    group projectGroup
+    sourceCompatibility = jdkVersion
+    targetCompatibility = jdkVersion
+
+    //设置编译编码
+    [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
 
     repositories {
-        maven { url "http://maven.aliyun.com/nexus/content/groups/public"}
+        maven { url mavenUrl}
         mavenCentral()
     }
 
     dependencies {
-        testCompile group: 'junit', name: 'junit', version: '4.12'
+
+        compile (
+                libraries.'logback-classic',
+                libraries.'jcl-over-slf4j',
+                libraries.'log4j-over-slf4j',
+
+                libraries."persistence-api",
+                libraries."validation-api",
+                libraries."jta",
+
+                libraries."mysql",
+                libraries."druid",
+
+                libraries."hibernate-validator",
+
+                // spring
+                libraries."spring-core",
+                libraries."spring-beans",
+                libraries."spring-jdbc",
+                libraries."spring-tx",
+                libraries."spring-context",
+                libraries."spring-context-support",
+
+                libraries."spring-orm",
+                libraries."spring-oxm",
+                libraries."spring-webmvc",
+                libraries."spring-jms",
+                libraries."spring-aspects",
+                libraries."spring-aop",
+
+                libraries."spring-websocket",
+                libraries."spring-messaging",
+
+                //myBatis
+                libraries."mybatis-core",
+                libraries."mybatis-spring",
+                //分页插件
+                libraries."pagehelper",
+                //通用Mapper
+                libraries."mapper",
+
+                libraries."mail",
+                libraries."aspectj",
+                libraries."aspectjweaver",
+                libraries."fileupload",
+                libraries."jackson",
+                libraries."cglib",
+
+                //slf4j
+                libraries."logback-classic",
+                libraries."logback-core",
+                libraries."jcl-over-slf4j",
+                libraries."log4j-over-slf4j",
+                libraries."slf4j-api",
+                libraries."logback-ext-spring",
+
+                // JSON
+                libraries."fastjson",
+
+                // Apache
+                libraries."commons-lang3",
+        )
+
+        testCompile (
+                libraries.'junit',
+                libraries.'spring-test',
+                libraries.'assertj',
+                libraries.'mockito-all',
+                libraries."powermock-module-junit4",
+                libraries."powermock-api-mockito",
+                libraries."powermock-module-junit4-rule-agent",
+        )
     }
 }
+
 
 
 

@@ -1,1 +1,91 @@
+archivesBaseName = 'web'
+
 apply plugin: 'war'
+apply plugin: "org.akhikhl.gretty"
+
+buildscript {
+    repositories {
+        maven {
+            url mavenUrl
+        }
+        mavenCentral()
+    }
+    dependencies {
+        classpath "gradle.plugin.org.akhikhl.gretty:gretty:1.4.2"
+    }
+}
+
+dependencies {
+    providedCompile(
+            libraries.'servlet-api',
+            libraries.'jsp-api'
+    )
+
+    compile(
+            project(':common'),
+            project(':core'),
+    )
+}
+
+gretty {
+    // supported values:
+    // 'jetty7', 'jetty8', 'jetty9', 'tomcat7', 'tomcat8'
+    servletContainer = 'tomcat8'
+    httpPort = 8091
+    contextPath = "/"
+}
+
+// 设置 snapshot war 版本号
+// 格式为： project-web-1.1.0.123-SNAPSHOT.war
+task setSnapshotWarVersion {
+    doFirst {
+        println '== Snapshot begin....'
+        println '================================================='
+        def buildVersion= getBuildVersion(project)
+        version = buildVersion
+        version += '-SNAPSHOT'
+        println ">> new version: ${version}"
+        println ">> war: ${archivesBaseName}-${version}.war"
+        println '================================================='
+
+        war {
+            manifest {
+                defaultManifest(project)
+            }
+        }
+    }
+}
+
+// 编译 snapshot 版的 war 包
+task snapshot(dependsOn: ['setSnapshotWarVersion', 'war']) {
+    doLast {
+        println '== Snapshot WAR Generate Over'
+    }
+}
+
+// 设置 release 包的版本号
+// 格式为: project-web-1.1.0.123.war
+task setReleaseWarVersion {
+    doFirst {
+        println '== Release Begin...'
+        println '================================================='
+        def buildVersion = getBuildVersion(project)
+        version = buildVersion
+        archivesBaseName = projectName
+        println ">> new version: ${version}"
+        println ">> war: ${archivesBaseName}-${version}.war"
+        println '================================================='
+
+        war {
+            manifest {
+                defaultManifest(project)
+            }
+        }
+    }
+}
+
+task release(dependsOn: ['setReleaseWarVersion', 'war']) {
+    doLast {
+        println '== Release WAR Generate Over'
+    }
+}
