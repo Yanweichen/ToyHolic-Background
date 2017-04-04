@@ -30,6 +30,12 @@ subprojects {
 
     dependencies {
 
+        // 引入根目录和各子项目下的libs中的jar包
+        ext.jarTree = fileTree(dir: 'libs', include: '**/*.jar')
+        ext.rootProjectLibs = new File(rootProject.rootDir, 'libs').getAbsolutePath()
+        ext.jarTree += fileTree(dir: rootProjectLibs, include: '**/*.jar')
+        compile jarTree
+
         compile (
                 libraries.'logback-classic',
                 libraries.'jcl-over-slf4j',
