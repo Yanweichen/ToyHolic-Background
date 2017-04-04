@@ -9,5 +9,5 @@ public interface UserService {
 
     User getUser();
 
-    void addUser();
+    void addUser() throws Exception;
 }

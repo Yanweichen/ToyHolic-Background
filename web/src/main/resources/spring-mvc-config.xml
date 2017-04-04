@@ -22,6 +22,8 @@
         <context:include-filter type="annotation"
                                 expression="org.springframework.web.bind.annotation.RestController" />
         <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+		<context:exclude-filter type="annotation"
+								expression="org.springframework.stereotype.Service" />
     </context:component-scan>
 
 	<!-- 定义视图解析器 -->

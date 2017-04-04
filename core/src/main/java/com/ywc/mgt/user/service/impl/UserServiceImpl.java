@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
+    @Transactional()
     public void addUser() {
         User user = new User();
         user.setUserName("asdasd");

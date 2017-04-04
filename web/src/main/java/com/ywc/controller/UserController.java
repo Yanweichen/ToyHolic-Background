@@ -29,7 +29,11 @@ public class UserController {
 
     @GetMapping("/add")
     public String addUser(){
-        userService.addUser();
+        try {
+            userService.addUser();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return "success";
     }
 }

@@ -70,11 +70,12 @@ subprojects {
                 //通用Mapper
                 libraries."mapper",
 
-                //mail
                 libraries."mail",
                 libraries."aspectj",
+                libraries."aspectjweaver",
                 libraries."fileupload",
                 libraries."jackson",
+                libraries."cglib",
 
                 //slf4j
                 libraries."logback-classic",
@@ -82,6 +83,7 @@ subprojects {
                 libraries."jcl-over-slf4j",
                 libraries."log4j-over-slf4j",
                 libraries."slf4j-api",
+                libraries."logback-ext-spring",
 
                 // JSON
                 libraries."fastjson",
