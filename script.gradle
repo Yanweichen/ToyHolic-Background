@@ -30,9 +30,9 @@ ext {
     }
 
     /**
-     * 子项目中调用，用于生成编译数字，此数字可以作为版本号的一个组成部分。
+     * 生成版本号
      *
-     * 存储位置为子项目下的 build_number.data,此文件与子项目的 build.gradle 平级
+     * 存储位置为子项目下的 localVersion.data,此文件与子项目的 build.gradle 平级
      */
     getBuildVersion = { project ->
 

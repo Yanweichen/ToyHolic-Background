@@ -74,7 +74,6 @@ subprojects {
                 libraries."aspectj",
                 libraries."aspectjweaver",
                 libraries."fileupload",
-                libraries."jackson",
                 libraries."cglib",
 
                 //slf4j
@@ -87,6 +86,7 @@ subprojects {
 
                 // JSON
                 libraries."fastjson",
+                libraries."jackson",
 
                 // Apache
                 libraries."commons-lang3",
