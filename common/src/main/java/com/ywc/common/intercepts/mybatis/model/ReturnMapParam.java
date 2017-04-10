@@ -1,4 +1,4 @@
-package com.ywc.common.intercepts.model;
+package com.ywc.common.intercepts.mybatis.model;
 
 import java.util.HashMap;
 

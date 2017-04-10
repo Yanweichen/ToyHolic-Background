@@ -1,4 +1,4 @@
-package com.ywc.common.intercepts;
+package com.ywc.common.intercepts.mybatis;
 
 import com.ywc.common.log.LogTemplate;
 import org.apache.ibatis.executor.Executor;

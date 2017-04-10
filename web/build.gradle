@@ -14,7 +14,18 @@ buildscript {
         classpath "gradle.plugin.org.akhikhl.gretty:gretty:1.4.2"
     }
 }
-
+sourceSets {
+    main {
+        resources {
+            srcDir("src/main/resources")
+            if (project['env'] == 'dev') {
+                srcDir("src/main/resources-dev")
+            } else if (project['env'] == 'prod') {
+                srcDir('src/main/resources-prod')
+            }
+        }
+    }
+}
 dependencies {
     providedCompile(
             libraries.'servlet-api',

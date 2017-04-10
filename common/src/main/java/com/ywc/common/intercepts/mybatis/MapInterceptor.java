@@ -1,6 +1,6 @@
-package com.ywc.common.intercepts;
+package com.ywc.common.intercepts.mybatis;
 
-import com.ywc.common.intercepts.model.ReturnMapParam;
+import com.ywc.common.intercepts.mybatis.model.ReturnMapParam;
 import com.ywc.common.log.LogTemplate;
 import com.ywc.util.ReflectUtil;
 import org.apache.ibatis.executor.parameter.ParameterHandler;

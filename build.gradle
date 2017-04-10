@@ -97,6 +97,7 @@ subprojects {
                 // Apache
                 libraries."commons-io",
                 libraries."commons-fileupload",
+                libraries."commons-beanutils",
                 libraries."commons-lang3",
         )
 

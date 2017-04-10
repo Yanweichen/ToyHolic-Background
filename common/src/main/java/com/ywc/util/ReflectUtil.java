@@ -1,7 +1,7 @@
 package com.ywc.util;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.util.Assert;
 
 import java.lang.reflect.Field;
