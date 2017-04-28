@@ -9,8 +9,8 @@ ext {
     projectName = "ToyHolic"
 }
 
-apply from: 'dependency.gradle'
-apply from: 'script.gradle'
+apply from: "$rootDir/gradle/dependency.gradle"
+apply from: "$rootDir/gradle/script.gradle"
 
 subprojects {
 
@@ -68,6 +68,12 @@ subprojects {
                 libraries."spring-websocket",
                 libraries."spring-messaging",
 
+                //shrio
+                libraries."shiro-core",
+                libraries."shiro-web",
+                libraries."shiro-ehcache",
+                libraries."shiro-spring",
+
                 //myBatis
                 libraries."mybatis-core",
                 libraries."mybatis-spring",
@@ -95,7 +101,13 @@ subprojects {
                 libraries."jackson",
 
                 // Apache
+                libraries."commons-io",
+                libraries."commons-fileupload",
+                libraries."commons-beanutils",
                 libraries."commons-lang3",
+
+                //qCloud
+                libraries."cos-api",
         )
 
         testCompile (

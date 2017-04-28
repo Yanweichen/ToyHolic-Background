@@ -5,6 +5,8 @@ ext.versions = [
         slf4j     : '1.7.24',
         mybatis   : '3.4.2',
         powermock : '1.6.6',
+        powermock : '1.6.6',
+        shiro     : '1.3.2',
 ]
 ext.libraries = [
         "servlet-api"            : "javax.servlet:javax.servlet-api:3.0.1",
@@ -39,6 +41,12 @@ ext.libraries = [
         "spring-websocket"       : "org.springframework:spring-websocket:${versions.spring}",
         "spring-messaging"       : "org.springframework:spring-messaging:${versions.spring}",
 
+        //shrio
+        "shiro-core"             :"org.apache.shiro:shiro-core:${versions.shiro}",
+        "shiro-web"              :"org.apache.shiro:shiro-web:${versions.shiro}",
+        "shiro-ehcache"          :"org.apache.shiro:shiro-ehcache:${versions.shiro}",
+        "shiro-spring"           :"org.apache.shiro:shiro-spring:${versions.shiro}",
+
         //myBatis
         "mybatis-core"           : "org.mybatis:mybatis:${versions.mybatis}",
         "mybatis-spring"         : "org.mybatis:mybatis-spring:1.3.1",
@@ -66,7 +74,13 @@ ext.libraries = [
         "fastjson"               : "com.alibaba:fastjson:${versions.fastjson}",
 
         // Apache
-        "commons-lang3"          : "org.apache.commons:commons-lang3:3.1",
+        "commons-lang3"          : "org.apache.commons:commons-lang3:3.4",
+        "commons-io"             : "commons-io:commons-io:2.5",
+        "commons-beanutils"      : "commons-beanutils:commons-beanutils:1.9.3",
+        "commons-fileupload"     : "commons-fileupload:commons-fileupload:1.3.1",
+
+        //qCloud
+        "cos-api"                : "com.qcloud:cos_api:4.4",
 
         //Test
         "junit"                  : "junit:junit:4.12",

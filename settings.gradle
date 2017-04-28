@@ -2,3 +2,5 @@ rootProject.name = 'ToyHolic'
 include 'web'
 include 'core'
 include 'common'
+include 'shiro'
+
