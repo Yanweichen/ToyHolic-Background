@@ -42,7 +42,7 @@ gretty {
     // supported values:
     // 'jetty7', 'jetty8', 'jetty9', 'tomcat7', 'tomcat8'
     servletContainer = 'tomcat8'
-    httpPort = 8091
+    httpPort = 8088
     //scanInterval定义扫描间隔，以秒为单位。当设置为零时，热部署完全禁用
     scanInterval = 0
     contextPath = "/"

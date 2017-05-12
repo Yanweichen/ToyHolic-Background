@@ -27,8 +27,7 @@
     </context:component-scan>
 
 	<!-- 定义视图解析器 -->
-	<bean
-		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix">
 			<value>/WEB-INF/</value>
 		</property>
@@ -36,4 +35,14 @@
 			<value>.jsp</value>
 		</property>
 	</bean>
+
+    <!--跨域访问支持-->
+	<mvc:cors>
+		<mvc:mapping
+				path="/**"
+				allowed-origins="*"
+				allowed-methods="POST,GET,OPTIONS,DELETE,PUT"
+				allowed-headers="Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With"
+				allow-credentials="true"/>
+	</mvc:cors>
 </beans>

@@ -9,10 +9,10 @@
         <property name="javaFileEncoding" value="UTF-8"/>
 
         <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
-            <property name="mappers" value="com.cardpay.basic.base.mapper.BasicMapper"/>
+            <property name="mappers" value="tk.mybatis.mapper.common.Mapper"/>
             <property name="caseSensitive" value="true"/>
 			<!--需要添加apiModelProperty注解填ture否则填false或者删除-->
-			<property name="apiModelProperty" value="true"/>
+			<property name="apiModelProperty" value="false"/>
 			<!--给每个属性添加自定义注解以 ',' 分割-->
 			<!--<property name="annotations" value="@A,@B,@C"/>-->
             <!--<property name="beginningDelimiter" value="`"/>-->
@@ -31,18 +31,18 @@
         </jdbcConnection> -->
 		
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://192.168.1.115:3306/kuaidai_release_3.0?useUnicode=true&amp;characterEncoding=utf8&amp;allowMultiQueries=true&amp;useSSL=false"
+                        connectionURL="jdbc:mysql://123.206.88.39:3306/toy_holic?useUnicode=true&amp;characterEncoding=utf8&amp;allowMultiQueries=true&amp;useSSL=false"
                         userId="root"
-                        password="qkjr_420">
+                        password="zzy5214wan">
         </jdbcConnection>
 		
-        <javaModelGenerator targetPackage="main.java.com.ywc.mgt.test.model" targetProject="src"/>
+        <javaModelGenerator targetPackage="com.ywc.mgt.user.model" targetProject="src/main/java"/>
 
-        <sqlMapGenerator targetPackage="main.java.com.ywc.mgt.test.dao" targetProject="src"/>
+        <sqlMapGenerator targetPackage="user" targetProject="src/main/resources/mybatis_mapper"/>
 
-        <javaClientGenerator targetPackage="main.java.com.ywc.mgt.test.dao" targetProject="src" type="XMLMAPPER"/>
+        <javaClientGenerator targetPackage="com.ywc.mgt.user.dao" targetProject="src/main/java" type="XMLMAPPER"/>
 
-        <table tableName="T_MENU" >
+        <table tableName="T_USER" >
 			<!--Oracle用这个-->
             <!-- <generatedKey identity="true" column="id" sqlStatement="Oracle"/> -->
 			<!--MySQL用这个-->
