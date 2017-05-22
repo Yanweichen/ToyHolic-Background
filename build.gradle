@@ -24,8 +24,9 @@ subprojects {
     [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
 
     repositories {
-        maven { url mavenUrl}
         mavenCentral()
+        jcenter()
+        maven { url mavenUrl}
     }
 
     dependencies {
