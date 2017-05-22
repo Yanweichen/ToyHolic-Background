@@ -61,6 +61,7 @@
 						</value>
 					</property>
 				</bean>
+                <bean class="com.ywc.common.intercepts.mybatis.SqlTimeInterceptor"/>
 			</array>
 		</property>
 	</bean>

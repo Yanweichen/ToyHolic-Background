@@ -9,8 +9,8 @@ ext {
     projectName = "ToyHolic"
 }
 
-apply from: 'dependency.gradle'
-apply from: 'script.gradle'
+apply from: "$rootDir/gradle/dependency.gradle"
+apply from: "$rootDir/gradle/script.gradle"
 
 subprojects {
 
@@ -29,6 +29,12 @@ subprojects {
     }
 
     dependencies {
+
+        // 引入根目录和各子项目下的libs中的jar包
+        ext.jarTree = fileTree(dir: 'libs', include: '**/*.jar')
+        ext.rootProjectLibs = new File(rootProject.rootDir, 'libs').getAbsolutePath()
+        ext.jarTree += fileTree(dir: rootProjectLibs, include: '**/*.jar')
+        compile jarTree
 
         compile (
                 libraries.'logback-classic',
@@ -62,6 +68,12 @@ subprojects {
                 libraries."spring-websocket",
                 libraries."spring-messaging",
 
+                //shrio
+                libraries."shiro-core",
+                libraries."shiro-web",
+                libraries."shiro-ehcache",
+                libraries."shiro-spring",
+
                 //myBatis
                 libraries."mybatis-core",
                 libraries."mybatis-spring",
@@ -74,7 +86,6 @@ subprojects {
                 libraries."aspectj",
                 libraries."aspectjweaver",
                 libraries."fileupload",
-                libraries."jackson",
                 libraries."cglib",
 
                 //slf4j
@@ -87,9 +98,16 @@ subprojects {
 
                 // JSON
                 libraries."fastjson",
+                libraries."jackson",
 
                 // Apache
+                libraries."commons-io",
+                libraries."commons-fileupload",
+                libraries."commons-beanutils",
                 libraries."commons-lang3",
+
+                //qCloud
+                libraries."cos-api",
         )
 
         testCompile (
