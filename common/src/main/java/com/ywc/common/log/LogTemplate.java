@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class LogTemplate {
 
-    private static final String LOG_FORMAT = "log:{} >> context:{}";
+    private static final String LOG_FORMAT = "{} >> {}";
     /**
      * 日志对象
      */
