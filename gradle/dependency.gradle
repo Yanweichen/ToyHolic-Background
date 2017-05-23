@@ -82,6 +82,10 @@ ext.libraries = [
         //qCloud
         "cos-api"                : "com.qcloud:cos_api:4.4",
 
+        //redis
+        "spring-data-redis"      : "org.springframework.data:spring-data-redis:1.8.1.RELEASE",
+        "jedis"                  : "redis.clients:jedis:2.9.0",
+
         //Test
         "junit"                  : "junit:junit:4.12",
         "assertj"                : "org.assertj:assertj-core:1.6.0",
