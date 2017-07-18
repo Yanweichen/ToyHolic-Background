@@ -37,11 +37,14 @@ subprojects {
         ext.jarTree += fileTree(dir: rootProjectLibs, include: '**/*.jar')
         compile jarTree
 
-        compile (
-                libraries.'logback-classic',
-                libraries.'jcl-over-slf4j',
-                libraries.'log4j-over-slf4j',
+        configurations.all {
+            // 忽略common log,log4j,使用slf4j,logback代替
+            exclude group: "commons-logging", module: "commons-logging"
+            exclude group: "org.slf4j", module: "slf4j-log4j12"
+            exclude group: "log4j", module: "log4j"
+        }
 
+        compile (
                 libraries."persistence-api",
                 libraries."validation-api",
                 libraries."jta",
@@ -91,11 +94,7 @@ subprojects {
 
                 //slf4j
                 libraries."logback-classic",
-                libraries."logback-core",
                 libraries."jcl-over-slf4j",
-                libraries."log4j-over-slf4j",
-                libraries."slf4j-api",
-                libraries."logback-ext-spring",
 
                 // JSON
                 libraries."fastjson",

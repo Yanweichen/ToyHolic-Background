@@ -62,7 +62,6 @@ ext.libraries = [
         "jackson"                : 'com.fasterxml.jackson.core:jackson-databind:2.7.3',
         "cglib"                  : 'cglib:cglib:3.2.4',
 
-        // 忽略common log，使用slf4j代替
         "logback-classic"        : "ch.qos.logback:logback-classic:${versions.logback}",
         "logback-core"           : "ch.qos.logback:logback-core:${versions.logback}",
         "jcl-over-slf4j"         : "org.slf4j:jcl-over-slf4j:${versions.slf4j}",

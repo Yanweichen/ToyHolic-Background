@@ -46,6 +46,7 @@ gretty {
     //scanInterval定义扫描间隔，以秒为单位。当设置为零时，热部署完全禁用
     scanInterval = 0
     contextPath = "/"
+    debugSuspend = false //去掉Debug暂停模式
 }
 
 // 设置 snapshot war 版本号
