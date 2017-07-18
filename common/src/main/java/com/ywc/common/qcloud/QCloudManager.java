@@ -37,10 +37,10 @@ public class QCloudManager {
      * 初始化COS客户端
      */
     private void initCosClient(){
-        String secretId = PropertyUtil.getCtxProp("qcloud_secretId");
-        String secretKey = PropertyUtil.getCtxProp("qcloud_secretKey");
-        String region = PropertyUtil.getCtxProp("qcloud_cos_region");
-        long appId = Long.parseLong(PropertyUtil.getCtxProp("qcloud_cos_appId"));
+        String secretId = PropertyUtil.getProperty("qcloud_secretId");
+        String secretKey = PropertyUtil.getProperty("qcloud_secretKey");
+        String region = PropertyUtil.getProperty("qcloud_cos_region");
+        long appId = Long.parseLong(PropertyUtil.getProperty("qcloud_cos_appId"));
         Credentials cred = new Credentials(appId, secretId, secretKey);
         // 初始化客户端配置
         ClientConfig clientConfig = new ClientConfig();

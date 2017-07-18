@@ -37,4 +37,5 @@
 
 	<import resource="spring-mybatis.xml" />
 	<import resource="spring-mail.xml" />
+	<import resource="spring-redis.xml" />
 </beans>
