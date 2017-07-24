@@ -34,7 +34,7 @@ dependencies {
 
     compile(
             project(':common'),
-            project(':core'),
+            project(':service'),
     )
 }
 

@@ -31,18 +31,18 @@
         </jdbcConnection> -->
 		
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://123.206.88.39:3306/toy_holic?useUnicode=true&amp;characterEncoding=utf8&amp;allowMultiQueries=true&amp;useSSL=false"
+                        connectionURL="jdbc:mysql://144.217.211.31:3306/toy_holic?useUnicode=true&amp;characterEncoding=utf8&amp;allowMultiQueries=true&amp;useSSL=false"
                         userId="root"
                         password="zzy5214wan">
         </jdbcConnection>
 		
-        <javaModelGenerator targetPackage="com.ywc.mgt.user.model" targetProject="src/main/java"/>
+        <javaModelGenerator targetPackage="com.ywc.model" targetProject="src/main/java"/>
 
-        <sqlMapGenerator targetPackage="user" targetProject="src/main/resources/mybatis_mapper"/>
+        <sqlMapGenerator targetPackage="authority" targetProject="src/main/resources/mybatis_mapper"/>
 
-        <javaClientGenerator targetPackage="com.ywc.mgt.user.dao" targetProject="src/main/java" type="XMLMAPPER"/>
+        <javaClientGenerator targetPackage="com.ywc.dao" targetProject="src/main/java" type="XMLMAPPER"/>
 
-        <table tableName="T_USER" >
+        <table tableName="T_*" >
 			<!--Oracle用这个-->
             <!-- <generatedKey identity="true" column="id" sqlStatement="Oracle"/> -->
 			<!--MySQL用这个-->

@@ -1,5 +1,5 @@
 version '1.0'
-archivesBaseName = 'shiro'
+archivesBaseName = 'authority'
 
 dependencies {
     compile project(":common")
