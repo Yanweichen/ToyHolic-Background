@@ -42,7 +42,7 @@
 
         <javaClientGenerator targetPackage="com.ywc.dao" targetProject="src/main/java" type="XMLMAPPER"/>
 
-        <table tableName="T_*" >
+        <table tableName="T_%" >
 			<!--Oracle用这个-->
             <!-- <generatedKey identity="true" column="id" sqlStatement="Oracle"/> -->
 			<!--MySQL用这个-->
