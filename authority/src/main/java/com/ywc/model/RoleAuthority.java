@@ -18,6 +18,12 @@ public class RoleAuthority {
     private Integer authorityId;
 
     /**
+     * 权限状态ID 1 增加 0 删除
+     */
+    @Column(name = "ROLE_AUTHORITY_STATUS")
+    private Integer roleAuthorityStatus;
+
+    /**
      * 获取角色ID
      *
      * @return ROLE_ID - 角色ID
@@ -51,5 +57,20 @@ public class RoleAuthority {
      */
     public void setAuthorityId(Integer authorityId) {
         this.authorityId = authorityId;
+    }
+
+    /**
+     * 获取权限状态
+     */
+    public Integer getRoleAuthorityStatus() {
+        return roleAuthorityStatus;
+    }
+
+    /**
+     * 设置权限状态
+     */
+    public RoleAuthority setRoleAuthorityStatus(Integer roleAuthorityStatus) {
+        this.roleAuthorityStatus = roleAuthorityStatus;
+        return this;
     }
 }
