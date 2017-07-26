@@ -45,7 +45,7 @@
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"/>
 		<!-- 自动扫描mapping.xml文件-->
-		<property name="mapperLocations" value="classpath:mybatis_mapper/**/*.xml"></property>
+		<property name="mapperLocations" value="classpath:mybatis_mapper/**/*.xml"/>
 		<property name="configurationProperties">
 			<value>
 				mapUnderscoreToCamelCase=true
@@ -67,7 +67,7 @@
 	</bean>
 
 	<bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.ywc.mgt"/>
+		<property name="basePackage" value="com.ywc"/>
 		<property name="markerInterface" value="tk.mybatis.mapper.common.Mapper"/>
 		<property name="properties">
 			<value>

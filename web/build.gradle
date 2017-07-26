@@ -23,6 +23,10 @@ sourceSets {
             } else if (project['env'] == 'prod') {
                 srcDir('src/main/resources-prod')
             }
+            srcDirs += [
+                    project(':service').sourceSets.main.resources,
+                    project(':authority').sourceSets.main.resources
+            ]
         }
     }
 }
@@ -35,6 +39,7 @@ dependencies {
     compile(
             project(':common'),
             project(':service'),
+            project(':authority'),
     )
 }
 
