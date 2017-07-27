@@ -71,7 +71,8 @@ public class PageHandler {
                     .forEach(pageSearch -> {
                         switch (pageSearch.getOperator()){
                             case LIKE:
-                                criteria.andLike(pageSearch.getSearchKey(), String.valueOf(pageSearch.getValue()));
+                                criteria.andLike(pageSearch.getSearchKey()
+                                        , "%"+String.valueOf(pageSearch.getValue())+"%");
                                 break;
                             case LE:
                                 criteria.andLessThan(pageSearch.getSearchKey(), pageSearch.getValue());
