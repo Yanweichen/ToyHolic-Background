@@ -1,9 +1,9 @@
 package com.ywc.controller;
 
-import com.github.pagehelper.PageHelper;
 import com.ywc.business.user.dao.UserMapper;
 import com.ywc.business.user.model.User;
 import com.ywc.business.user.service.UserService;
+import com.ywc.common.base.controller.BaseController;
 import com.ywc.common.page.model.PageData;
 import com.ywc.common.qcloud.file.FileManager;
 import com.ywc.common.qcloud.model.FileResult;
@@ -15,14 +15,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by yanweichen on 2017/4/3.
  */
 @RestController
 @RequestMapping("/api/user")
-public class UserController {
+public class UserController extends BaseController<User> {
 
     @Autowired
     private UserService userService;
@@ -44,8 +46,8 @@ public class UserController {
     }
 
     @PostMapping("/list")
-    public PageData getUserList(HttpServletRequest request){
-        return new PageData<>(request, userService);
+    public PageData getUserList(){
+        return doPage();
     }
 
     @GetMapping("/add")

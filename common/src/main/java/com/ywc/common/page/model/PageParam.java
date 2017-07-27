@@ -53,7 +53,8 @@ public class PageParam {
         return pageOrders.stream().map(PageOrder::toString).collect(Collectors.joining(","));
     }
 
-    class PageOrder {
+    public static class PageOrder {
+
         private String orderKey;
         private OrderEnum order;
 

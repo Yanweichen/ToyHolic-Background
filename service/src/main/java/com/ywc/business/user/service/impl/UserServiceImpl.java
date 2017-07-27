@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by yanweichen on 2017/4/3.
@@ -25,7 +26,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional()
     public void addUser() {
         User user = new User();
         user.setUserName("asdasd");
@@ -34,7 +34,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List selectByExample(Example example) {
+    public List<User> selectUser(Map<String, Object> map) {
+        return null;
+    }
+
+    @Override
+    public List<User> selectByExample(Example example) {
         return userMapper.selectByExample(example);
     }
 }

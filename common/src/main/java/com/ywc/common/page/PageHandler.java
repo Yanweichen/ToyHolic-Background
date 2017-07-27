@@ -4,13 +4,12 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ywc.common.base.service.BaseService;
 import com.ywc.common.page.contanst.DataBaseEnum;
+import com.ywc.common.page.contanst.OrderEnum;
 import com.ywc.common.page.handler.DateHandler;
 import com.ywc.common.page.model.PageParam;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -64,11 +63,23 @@ public class PageHandler {
 
     private void processCriteria(PageParam pageParam, Class clazz, Example example) {
         Map<String, Object> customParam = pageParam.getPageSearch();
-        DateHandler.initDateHandler(clazz, pageParam.getPageSearch(), DataBaseEnum.MYSQL);
-        Example.Criteria criteria = example.createCriteria();
-        customParam.entrySet().stream().filter(entry -> DateHandler.dateHandle(criteria,entry))
-                .forEach(entry -> criteria.andEqualTo(entry.getKey(), entry.getValue()));
-        example.createCriteria().andCondition(pageParam.getPageOrdersToString());
+        if (customParam != null && !customParam.isEmpty()){
+            DateHandler.initDateHandler(clazz, pageParam.getPageSearch(), DataBaseEnum.MYSQL);
+            Example.Criteria criteria = example.createCriteria();
+            customParam.entrySet().stream().filter(entry -> DateHandler.dateHandle(criteria,entry))
+                    .forEach(entry -> criteria.andEqualTo(entry.getKey(), entry.getValue()));
+        }
+        if (pageParam.getPageOrders() != null && !pageParam.getPageOrders().isEmpty()){
+            List<PageParam.PageOrder> pageOrders = pageParam.getPageOrders();
+            pageOrders.forEach(order -> {
+                Example.OrderBy orderBy = example.orderBy(order.getOrderKey());
+                if (OrderEnum.DESC.equals(order.getOrder())){
+                    orderBy.desc();
+                } else {
+                    orderBy.asc();
+                }
+            });
+        }
     }
 
 }
