@@ -68,7 +68,7 @@
 
 	<bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="com.ywc"/>
-		<property name="markerInterface" value="tk.mybatis.mapper.common.Mapper"/>
+		<property name="markerInterface" value="com.ywc.common.base.mapper.BaseMapper"/>
 		<property name="properties">
 			<value>
 				mappers=tk.mybatis.mapper.common.Mapper

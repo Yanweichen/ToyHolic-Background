@@ -1,7 +1,7 @@
 package com.ywc.dao;
 
+import com.ywc.common.base.mapper.BaseMapper;
 import com.ywc.model.UserAuthority;
-import tk.mybatis.mapper.common.Mapper;
 
-public interface UserAuthorityMapper extends Mapper<UserAuthority> {
+public interface UserAuthorityMapper extends BaseMapper<UserAuthority> {
 }

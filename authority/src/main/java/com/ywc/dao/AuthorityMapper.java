@@ -1,12 +1,12 @@
 package com.ywc.dao;
 
+import com.ywc.common.base.mapper.BaseMapper;
 import com.ywc.model.Authority;
 import com.ywc.model.dto.AuthorityDTO;
-import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
 
-public interface AuthorityMapper extends Mapper<Authority> {
+public interface AuthorityMapper extends BaseMapper<Authority> {
 
     /**
      * 根据用户ID 查询权限

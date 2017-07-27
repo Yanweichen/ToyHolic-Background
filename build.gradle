@@ -45,6 +45,11 @@ subprojects {
         }
 
         compile (
+                libraries."servlet-api",
+                libraries."jsp-api",
+                libraries."jstl",
+                libraries."standard",
+
                 libraries."persistence-api",
                 libraries."validation-api",
                 libraries."jta",

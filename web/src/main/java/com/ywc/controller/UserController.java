@@ -1,17 +1,19 @@
 package com.ywc.controller;
 
 import com.github.pagehelper.PageHelper;
+import com.ywc.business.user.dao.UserMapper;
+import com.ywc.business.user.model.User;
+import com.ywc.business.user.service.UserService;
+import com.ywc.common.page.model.PageData;
 import com.ywc.common.qcloud.file.FileManager;
 import com.ywc.common.qcloud.model.FileResult;
 import com.ywc.dao.AuthorityMapper;
-import com.ywc.mgt.user.dao.UserMapper;
-import com.ywc.mgt.user.model.User;
-import com.ywc.mgt.user.service.UserService;
 import com.ywc.model.dto.AuthorityDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 
@@ -41,11 +43,9 @@ public class UserController {
         return authorityMapper.selectUserAuthority(id);
     }
 
-    @GetMapping("/list")
-    public List<User> getUserList(int page){
-        PageHelper.startPage(page,5);
-        List<User> users = userMapper.selectAll();
-        return users;
+    @PostMapping("/list")
+    public PageData getUserList(HttpServletRequest request){
+        return new PageData<>(request, userService);
     }
 
     @GetMapping("/add")

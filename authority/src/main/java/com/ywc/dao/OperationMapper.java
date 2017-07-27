@@ -1,7 +1,7 @@
 package com.ywc.dao;
 
+import com.ywc.common.base.mapper.BaseMapper;
 import com.ywc.model.Operation;
-import tk.mybatis.mapper.common.Mapper;
 
-public interface OperationMapper extends Mapper<Operation> {
+public interface OperationMapper extends BaseMapper<Operation> {
 }

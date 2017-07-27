@@ -1,11 +1,14 @@
-package com.ywc.mgt.user.service.impl;
+package com.ywc.business.user.service.impl;
 
-import com.ywc.mgt.user.dao.UserMapper;
-import com.ywc.mgt.user.model.User;
-import com.ywc.mgt.user.service.UserService;
+import com.ywc.business.user.dao.UserMapper;
+import com.ywc.business.user.model.User;
+import com.ywc.business.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
+
+import java.util.List;
 
 /**
  * Created by yanweichen on 2017/4/3.
@@ -28,7 +31,10 @@ public class UserServiceImpl implements UserService {
         user.setUserName("asdasd");
         user.setUserPassword("sadasdasdasdas");
         userMapper.insert(user);
-        throw new RuntimeException();
     }
 
+    @Override
+    public List selectByExample(Example example) {
+        return userMapper.selectByExample(example);
+    }
 }

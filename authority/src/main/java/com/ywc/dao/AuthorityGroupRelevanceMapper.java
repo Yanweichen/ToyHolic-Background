@@ -1,7 +1,7 @@
 package com.ywc.dao;
 
 import com.ywc.model.AuthorityGroupRelevance;
-import tk.mybatis.mapper.common.Mapper;
+import tk.mybatis.mapper.common.BaseMapper;
 
-public interface AuthorityGroupRelevanceMapper extends Mapper<AuthorityGroupRelevance> {
+public interface AuthorityGroupRelevanceMapper extends BaseMapper<AuthorityGroupRelevance> {
 }
