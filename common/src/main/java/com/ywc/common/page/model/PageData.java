@@ -1,6 +1,5 @@
 package com.ywc.common.page.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.pagehelper.PageInfo;
 import com.ywc.common.base.service.BaseService;
 import com.ywc.common.page.PageHandler;

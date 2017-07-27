@@ -22,6 +22,8 @@ sourceSets {
                 srcDir("src/main/resources-dev")
             } else if (project['env'] == 'prod') {
                 srcDir('src/main/resources-prod')
+            } else if(project['env'] == 'local'){
+                srcDir('src/main/resources-local')
             }
             srcDirs += [
                     project(':service').sourceSets.main.resources,

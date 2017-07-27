@@ -105,6 +105,8 @@ subprojects {
                 libraries."fastjson",
                 libraries."jackson",
 
+                libraries.guava,
+                
                 // Apache
                 libraries."commons-io",
                 libraries."commons-fileupload",

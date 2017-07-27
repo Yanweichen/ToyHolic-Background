@@ -53,7 +53,7 @@ ext.libraries = [
         //分页插件
         "pagehelper"             : "com.github.pagehelper:pagehelper:5.0.3",
         //通用Mapper
-        "mapper"                 : "tk.mybatis:mapper:3.4.0",
+        "mapper"                 : "tk.mybatis:mapper:3.4.2",
 
         "mail"                   : 'javax.mail:mail:1.4.7',
         "aspectjweaver"          : 'org.aspectj:aspectjweaver:1.8.10',
@@ -71,6 +71,8 @@ ext.libraries = [
 
         // JSON
         "fastjson"               : "com.alibaba:fastjson:${versions.fastjson}",
+
+        "guava"                  : "com.google.guava:guava:22.0",
 
         // Apache
         "commons-lang3"          : "org.apache.commons:commons-lang3:3.4",

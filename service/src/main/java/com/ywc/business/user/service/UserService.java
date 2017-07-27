@@ -1,7 +1,7 @@
 package com.ywc.business.user.service;
 
-import com.ywc.common.base.service.BaseService;
 import com.ywc.business.user.model.User;
+import com.ywc.common.base.service.BaseService;
 
 import java.util.List;
 import java.util.Map;

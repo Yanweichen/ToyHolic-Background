@@ -3,6 +3,7 @@ package com.ywc.common.page.handler;
 import com.alibaba.fastjson.JSONArray;
 import com.ywc.common.base.functioninterface.SuFunction;
 import com.ywc.common.page.contanst.DataBaseEnum;
+import com.ywc.common.page.model.PageParam;
 import com.ywc.util.Underline2Camel;
 import tk.mybatis.mapper.entity.Example;
 
@@ -14,9 +15,7 @@ import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
-import static com.ywc.common.page.contanst.PageConstant.BEGIN_TIME;
-import static com.ywc.common.page.contanst.PageConstant.DATE_SEARCH;
-import static com.ywc.common.page.contanst.PageConstant.END_TIME;
+import static com.ywc.common.page.contanst.PageConstant.*;
 
 
 /**
@@ -79,21 +78,21 @@ public class DateHandler {
      * 处理日期类型搜索
      *
      * @param criteria 组装条件对象
-     * @param entry 搜索条件
+     * @param pageSearch 搜索条件
      * @return 是否已经处理了日期类型
      */
-    public static boolean dateHandle(Example.Criteria criteria, Map.Entry<String, Object> entry) {
+    public static boolean dateHandle(Example.Criteria criteria, PageParam.PageSearch pageSearch) {
         SuFunction<String,Object,Object,String> betweenDateFunction = betweenDateFunctionThread.get();
         BiFunction<String, Object,String> singleDateFunction = singleDateFunctionThread.get();
-        if(BEGIN_TIME.equals(entry.getKey())){
-            beginTime.set(entry.getValue());
+        if(BEGIN_TIME.equals(pageSearch.getSearchKey())){
+            beginTime.set(pageSearch.getValue());
             if(endTime.get() != null){
                 doBetweenHandle(criteria, betweenDateFunction);
             }
             return false;
         }
-        if(END_TIME.equals(entry.getKey())){
-            endTime.set(entry.getValue());
+        if(END_TIME.equals(pageSearch.getSearchKey())){
+            endTime.set(pageSearch.getValue());
             if(beginTime.get() != null){
                 doBetweenHandle(criteria, betweenDateFunction);
             }
@@ -101,8 +100,8 @@ public class DateHandler {
         }
         //单日期搜索
         for (String datePropertyName : datePropertyNameList.get()) {
-            if(datePropertyName.equals(entry.getKey())){
-                criteria.andCondition(singleDateFunction.apply(entry.getKey(),entry.getValue()));
+            if(datePropertyName.equals(pageSearch.getSearchKey())){
+                criteria.andCondition(singleDateFunction.apply(pageSearch.getSearchKey(),pageSearch.getValue()));
                 return false;
             }
         }

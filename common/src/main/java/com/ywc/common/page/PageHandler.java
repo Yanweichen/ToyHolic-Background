@@ -48,10 +48,10 @@ public class PageHandler {
     public <T> PageInfo<T> processPage(HttpServletRequest request,Map<String,Object> customParam
             , Function<Map<String,Object>,List<T>> function){
         PageParam pageParam = new PageParam(request);
-        Map<String, Object> pageSearch = pageParam.getPageSearch();
+        Map<String, Object> pageSearchMap = pageParam.getPageSearchMap();
         PageHelper.startPage(pageParam.getPageStart(),pageParam.getPageSize());
-        pageSearch.putAll(customParam);
-        List<T> data = function.apply(pageSearch);
+        pageSearchMap.putAll(customParam);
+        List<T> data = function.apply(pageSearchMap);
         return new PageInfo<>(data);
     }
 
@@ -62,12 +62,31 @@ public class PageHandler {
     }
 
     private void processCriteria(PageParam pageParam, Class clazz, Example example) {
-        Map<String, Object> customParam = pageParam.getPageSearch();
+        List<PageParam.PageSearch> customParam = pageParam.getPageSearch();
         if (customParam != null && !customParam.isEmpty()){
-            DateHandler.initDateHandler(clazz, pageParam.getPageSearch(), DataBaseEnum.MYSQL);
+            DateHandler.initDateHandler(clazz, pageParam.getPageSearchMap(), DataBaseEnum.MYSQL);
             Example.Criteria criteria = example.createCriteria();
-            customParam.entrySet().stream().filter(entry -> DateHandler.dateHandle(criteria,entry))
-                    .forEach(entry -> criteria.andEqualTo(entry.getKey(), entry.getValue()));
+            customParam.stream()
+                    .filter(pageSearch -> DateHandler.dateHandle(criteria,pageSearch))
+                    .forEach(pageSearch -> {
+                        switch (pageSearch.getOperator()){
+                            case LIKE:
+                                criteria.andLike(pageSearch.getSearchKey(), String.valueOf(pageSearch.getValue()));
+                                break;
+                            case LE:
+                                criteria.andLessThan(pageSearch.getSearchKey(), pageSearch.getValue());
+                                break;
+                            case GT:
+                                criteria.andGreaterThan(pageSearch.getSearchKey(), pageSearch.getValue());
+                                break;
+                            case NE:
+                                criteria.andNotEqualTo(pageSearch.getSearchKey(), pageSearch.getValue());
+                                break;
+                            default:
+                                criteria.andEqualTo(pageSearch.getSearchKey(), pageSearch.getValue());
+                                break;
+                        }
+                    });
         }
         if (pageParam.getPageOrders() != null && !pageParam.getPageOrders().isEmpty()){
             List<PageParam.PageOrder> pageOrders = pageParam.getPageOrders();

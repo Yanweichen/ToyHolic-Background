@@ -1,9 +1,9 @@
 package com.ywc.common.page.model;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.TypeReference;
 import com.ywc.common.page.contanst.OrderEnum;
 import com.ywc.common.page.contanst.PageConstant;
+import com.ywc.common.page.contanst.PageOperator;
 import com.ywc.util.Underline2Camel;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,15 +21,18 @@ public class PageParam {
 
     private Integer pageSize;
 
-    private Map<String,Object> pageSearch;
+    private Map<String,Object> pageSearchMap;
+
+    private List<PageSearch> pageSearch;
 
     private List<PageOrder> pageOrders;
 
     public PageParam(HttpServletRequest request) {
         pageStart = Integer.valueOf(request.getParameter(PageConstant.PAGE_START));
         pageSize = Integer.valueOf(request.getParameter(PageConstant.PAGE_SIZE));
-        pageSearch = JSON.parseObject(request.getParameter(PageConstant.PAGE_SEARCH)
-                ,new TypeReference<Map<String,Object>>(){});
+        pageSearch = JSON.parseArray(request.getParameter(PageConstant.PAGE_SEARCH),PageSearch.class);
+        pageSearchMap = pageSearch.stream()
+                .collect(Collectors.toMap(PageSearch::getSearchKey,PageSearch::getValue));
         pageOrders = JSON.parseArray(request.getParameter(PageConstant.PAGE_ORDER),PageOrder.class);
     }
 
@@ -41,12 +44,16 @@ public class PageParam {
         return pageSize;
     }
 
-    public Map<String, Object> getPageSearch() {
-        return pageSearch;
+    public Map<String, Object> getPageSearchMap() {
+        return pageSearchMap;
     }
 
     public List<PageOrder> getPageOrders() {
         return pageOrders;
+    }
+
+    public List<PageSearch> getPageSearch() {
+        return pageSearch;
     }
 
     public String getPageOrdersToString() {
@@ -81,4 +88,41 @@ public class PageParam {
             return Underline2Camel.camel2Underline(orderKey)+" "+order.getOrder();
         }
     }
+
+    public static class PageSearch{
+
+        private String searchKey;
+
+        private PageOperator operator;
+
+        private Object value;
+
+        public String getSearchKey() {
+            return searchKey;
+        }
+
+        public PageSearch setSearchKey(String searchKey) {
+            this.searchKey = searchKey;
+            return this;
+        }
+
+        public PageOperator getOperator() {
+            return operator;
+        }
+
+        public PageSearch setOperator(String operator) {
+            this.operator = PageOperator.getOperator(operator);
+            return this;
+        }
+
+        public Object getValue() {
+            return value;
+        }
+
+        public PageSearch setValue(Object value) {
+            this.value = value;
+            return this;
+        }
+    }
+
 }
