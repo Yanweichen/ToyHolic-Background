@@ -2,11 +2,13 @@ package com.ywc.common.page;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.ywc.common.base.service.BaseService;
 import com.ywc.common.page.contanst.DataBaseEnum;
 import com.ywc.common.page.contanst.OrderEnum;
 import com.ywc.common.page.handler.DateHandler;
+import com.ywc.common.page.handler.HandlerFactory;
+import com.ywc.common.page.handler.OperatorHandler;
 import com.ywc.common.page.model.PageParam;
+import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,19 +30,19 @@ public class PageHandler {
         return pageHandler;
     }
 
-    public <T> PageInfo<T> processPage(HttpServletRequest request,Class<T> clazz,BaseService<T> baseService){
-        return processPage(request,clazz,null,baseService);
+    public <T> PageInfo<T> processPage(HttpServletRequest request,Class<T> clazz,Mapper<T> mapper){
+        return processPage(request,clazz,null,mapper);
     }
 
-    public <T> PageInfo<T> processPage(HttpServletRequest request,Class<T> clazz,Example example, BaseService<T> baseService){
+    public <T> PageInfo<T> processPage(HttpServletRequest request,Class<T> clazz,Example example, Mapper<T> mapper){
         PageParam pageParam = new PageParam(request);
         PageHelper.startPage(pageParam.getPageStart(),pageParam.getPageSize());
         List<T> data;
         if (example == null){
-            data = baseService.selectByExample(createExample(pageParam,clazz));
+            data = mapper.selectByExample(createExample(pageParam,clazz));
         } else {
             processCriteria(pageParam,clazz,example);
-            data = baseService.selectByExample(example);
+            data = mapper.selectByExample(example);
         }
         return new PageInfo<>(data);
     }
@@ -49,8 +51,10 @@ public class PageHandler {
             , Function<Map<String,Object>,List<T>> function){
         PageParam pageParam = new PageParam(request);
         Map<String, Object> pageSearchMap = pageParam.getPageSearchMap();
+        if (customParam != null && !customParam.isEmpty()){
+            pageSearchMap.putAll(customParam);
+        }
         PageHelper.startPage(pageParam.getPageStart(),pageParam.getPageSize());
-        pageSearchMap.putAll(customParam);
         List<T> data = function.apply(pageSearchMap);
         return new PageInfo<>(data);
     }
@@ -64,30 +68,13 @@ public class PageHandler {
     private void processCriteria(PageParam pageParam, Class clazz, Example example) {
         List<PageParam.PageSearch> customParam = pageParam.getPageSearch();
         if (customParam != null && !customParam.isEmpty()){
-            DateHandler.initDateHandler(clazz, pageParam.getPageSearchMap(), DataBaseEnum.MYSQL);
+            HandlerFactory handlerFactory = HandlerFactory.getInstance(DataBaseEnum.MYSQL);
+            handlerFactory.initDateHandler(clazz, pageParam.getPageSearchMap());
+            handlerFactory.initOperatorHandler();
             Example.Criteria criteria = example.createCriteria();
             customParam.stream()
                     .filter(pageSearch -> DateHandler.dateHandle(criteria,pageSearch))
-                    .forEach(pageSearch -> {
-                        switch (pageSearch.getOperator()){
-                            case LIKE:
-                                criteria.andLike(pageSearch.getSearchKey()
-                                        , "%"+String.valueOf(pageSearch.getValue())+"%");
-                                break;
-                            case LE:
-                                criteria.andLessThan(pageSearch.getSearchKey(), pageSearch.getValue());
-                                break;
-                            case GT:
-                                criteria.andGreaterThan(pageSearch.getSearchKey(), pageSearch.getValue());
-                                break;
-                            case NE:
-                                criteria.andNotEqualTo(pageSearch.getSearchKey(), pageSearch.getValue());
-                                break;
-                            default:
-                                criteria.andEqualTo(pageSearch.getSearchKey(), pageSearch.getValue());
-                                break;
-                        }
-                    });
+                    .forEach(pageSearch -> OperatorHandler.propertyHandle(criteria,pageSearch));
         }
         if (pageParam.getPageOrders() != null && !pageParam.getPageOrders().isEmpty()){
             List<PageParam.PageOrder> pageOrders = pageParam.getPageOrders();

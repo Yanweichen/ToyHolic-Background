@@ -1,8 +1,8 @@
 package com.ywc.common.page.model;
 
 import com.github.pagehelper.PageInfo;
-import com.ywc.common.base.service.BaseService;
 import com.ywc.common.page.PageHandler;
+import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,12 +26,12 @@ public class PageData<T>{
 
     private List<T> data;
 
-    public PageData(HttpServletRequest request,Class<T> clazz,BaseService<T> baseService) {
-        convert2PageData(PageHandler.getInstance().processPage(request,clazz,baseService));
+    public PageData(HttpServletRequest request,Class<T> clazz,Mapper<T> mapper) {
+        convert2PageData(PageHandler.getInstance().processPage(request,clazz,mapper));
     }
 
-    public PageData(HttpServletRequest request,Class<T> clazz,Example example, BaseService<T> baseService) {
-        convert2PageData(PageHandler.getInstance().processPage(request,clazz,example,baseService));
+    public PageData(HttpServletRequest request,Class<T> clazz,Example example, Mapper<T> mapper) {
+        convert2PageData(PageHandler.getInstance().processPage(request,clazz,example,mapper));
     }
 
     public PageData(HttpServletRequest request,Map<String,Object> customParam, Function<Map<String,Object>

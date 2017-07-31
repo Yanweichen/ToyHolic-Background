@@ -60,7 +60,8 @@ public class DateHandler {
                     throw new IllegalArgumentException("日期搜索参数错误！");
                 }
                 JSONArray propertyList = JSONArray.parseArray(entry.getValue().toString());
-                List<String> stringList = propertyList.stream().map(Object::toString).collect(Collectors.toList());
+                List<String> stringList = propertyList.stream()
+                        .map(Object::toString).collect(Collectors.toList());
                 datePropertyNameList.set(stringList);
                 map.remove(DATE_SEARCH);
                 return;
@@ -79,7 +80,7 @@ public class DateHandler {
      *
      * @param criteria 组装条件对象
      * @param pageSearch 搜索条件
-     * @return 是否已经处理了日期类型
+     * @return false 不需要再处理该属性 true 该属性仍需被处理
      */
     public static boolean dateHandle(Example.Criteria criteria, PageParam.PageSearch pageSearch) {
         SuFunction<String,Object,Object,String> betweenDateFunction = betweenDateFunctionThread.get();
@@ -101,20 +102,23 @@ public class DateHandler {
         //单日期搜索
         for (String datePropertyName : datePropertyNameList.get()) {
             if(datePropertyName.equals(pageSearch.getSearchKey())){
-                criteria.andCondition(singleDateFunction.apply(pageSearch.getSearchKey(),pageSearch.getValue()));
+                criteria.andCondition(singleDateFunction.apply(Underline2Camel
+                        .camel2Underline(pageSearch.getSearchKey()),pageSearch.getValue()));
                 return false;
             }
         }
         return true;
     }
 
-    private static void doBetweenHandle(Example.Criteria criteria, SuFunction<String, Object, Object, String> betweenDateFunction) {
+    private static void doBetweenHandle(Example.Criteria criteria
+            , SuFunction<String, Object, Object, String> betweenDateFunction) {
         if(datePropertyNameList.get() == null || datePropertyNameList.get().isEmpty()){
             throw new RuntimeException("未找到日期类型属性！");
         }
-        //支持多字段日期排序
+        //支持多字段日期搜索
         for (String datePropertyName : datePropertyNameList.get()) {
-            String sql = betweenDateFunction.apply(datePropertyName, beginTime.get(), endTime.get());
+            String sql = betweenDateFunction.apply(Underline2Camel
+                    .camel2Underline(datePropertyName), beginTime.get(), endTime.get());
             criteria.andCondition(sql);
         }
     }
@@ -122,26 +126,26 @@ public class DateHandler {
     /**
      * MySQL 类型单日期处理
      *
-     * @param property 属性名
+     * @param column 属性对应的数据库字段
      * @param date 时间
      * @return SQL
      */
-    private static String MySQLSingleDateHandle(String property, Object date){
+    private static String MySQLSingleDateHandle(String column, Object date){
         return "DATE_FORMAT("+
-                Underline2Camel.camel2Underline(property)+",'%Y-%m-%d') " +
+                column+",'%Y-%m-%d') " +
                 "= DATE_FORMAT(STR_TO_DATE('"+date+"', '%Y-%m-%d %H:%i:%s'),'%Y-%m-%d')";
     }
 
     /**
      * MySQL 日期区间处理
      *
-     * @param property 属性名
+     * @param column 属性对应的数据库字段
      * @param beginTime 起始时间
      * @param endTime 结束时间
      * @return SQL
      */
-    private static String MySQLBetweenDateHandle(String property, Object beginTime,Object endTime){
-        return "DATE_FORMAT("+ Underline2Camel.camel2Underline(property)+ ",'%Y-%m-%d')" +
+    private static String MySQLBetweenDateHandle(String column, Object beginTime,Object endTime){
+        return "DATE_FORMAT("+ column + ",'%Y-%m-%d')" +
                 " BETWEEN " +
                 "DATE_FORMAT(STR_TO_DATE('"+beginTime+"','%Y-%m-%d %H:%i:%s'),'%Y-%m-%d')" +
                 " AND " +

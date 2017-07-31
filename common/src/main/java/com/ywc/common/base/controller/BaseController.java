@@ -1,5 +1,6 @@
 package com.ywc.common.base.controller;
 
+import com.ywc.common.base.mapper.BaseMapper;
 import com.ywc.common.base.service.BaseService;
 import com.ywc.common.page.model.PageData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,15 +21,18 @@ import java.util.function.Function;
 public class BaseController<T> {
 
     @Autowired
-    private BaseService<T> baseService;
+    private BaseService<T> thisService;
+
+    @Autowired
+    private BaseMapper<T> thisMapper;
 
     /**
      * 默认单表分页
      *
      * @return 分页数据
      */
-    public PageData<T> doPage(){
-        return new PageData<>(getRequest(),getBeanClazz(),baseService);
+    protected PageData<T> doPage(){
+        return new PageData<>(getRequest(),getBeanClazz(), thisMapper);
     }
 
     /**
@@ -37,9 +41,20 @@ public class BaseController<T> {
      * @param example 条件
      * @return 分页数据
      */
-    public PageData<T> doPage(Example example){
-        return new PageData<>(getRequest(),getBeanClazz(),example,baseService);
+    protected PageData<T> doPage(Example example){
+        return new PageData<>(getRequest(),getBeanClazz(),example, thisMapper);
     }
+
+    /**
+     * 自定义方法分页
+     *
+     * @param function 方法
+     * @return 分页数据
+     */
+    protected PageData<T> doPage(Function<Map<String,Object>,List<T>> function){
+        return new PageData<>(getRequest(),null,function);
+    }
+
 
     /**
      * 自定义方法分页
@@ -48,7 +63,7 @@ public class BaseController<T> {
      * @param function 方法
      * @return 分页数据
      */
-    public PageData<T> doPage(Map<String,Object> customParam, Function<Map<String,Object>,List<T>> function){
+    protected PageData<T> doPage(Map<String,Object> customParam, Function<Map<String,Object>,List<T>> function){
         return new PageData<>(getRequest(),customParam,function);
     }
 
@@ -57,7 +72,7 @@ public class BaseController<T> {
      *
      * @return request
      */
-    public HttpServletRequest getRequest(){
+    protected HttpServletRequest getRequest(){
         return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
     }
 
@@ -66,7 +81,7 @@ public class BaseController<T> {
      *
      * @return 泛型类型
      */
-    public final Class<T> getBeanClazz() {
+    protected final Class<T> getBeanClazz() {
         return (Class<T>) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[0];
     }
