@@ -9,8 +9,8 @@ ext {
     projectName = "ToyHolic"
 }
 
-apply from: 'dependency.gradle'
-apply from: 'script.gradle'
+apply from: "$rootDir/gradle/dependency.gradle"
+apply from: "$rootDir/gradle/script.gradle"
 
 subprojects {
 
@@ -24,17 +24,27 @@ subprojects {
     [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
 
     repositories {
-        maven { url mavenUrl}
         mavenCentral()
+        jcenter()
+        maven { url mavenUrl}
     }
 
     dependencies {
 
-        compile (
-                libraries.'logback-classic',
-                libraries.'jcl-over-slf4j',
-                libraries.'log4j-over-slf4j',
+        // 引入根目录和各子项目下的libs中的jar包
+        ext.jarTree = fileTree(dir: 'libs', include: '**/*.jar')
+        ext.rootProjectLibs = new File(rootProject.rootDir, 'libs').getAbsolutePath()
+        ext.jarTree += fileTree(dir: rootProjectLibs, include: '**/*.jar')
+        compile jarTree
 
+        configurations.all {
+            // 忽略common log,log4j,使用slf4j,logback代替
+            exclude group: "commons-logging", module: "commons-logging"
+            exclude group: "org.slf4j", module: "slf4j-log4j12"
+            exclude group: "log4j", module: "log4j"
+        }
+
+        compile (
                 libraries."persistence-api",
                 libraries."validation-api",
                 libraries."jta",
@@ -62,6 +72,12 @@ subprojects {
                 libraries."spring-websocket",
                 libraries."spring-messaging",
 
+                //shrio
+                libraries."shiro-core",
+                libraries."shiro-web",
+                libraries."shiro-ehcache",
+                libraries."shiro-spring",
+
                 //myBatis
                 libraries."mybatis-core",
                 libraries."mybatis-spring",
@@ -74,22 +90,28 @@ subprojects {
                 libraries."aspectj",
                 libraries."aspectjweaver",
                 libraries."fileupload",
-                libraries."jackson",
                 libraries."cglib",
 
                 //slf4j
                 libraries."logback-classic",
-                libraries."logback-core",
                 libraries."jcl-over-slf4j",
-                libraries."log4j-over-slf4j",
-                libraries."slf4j-api",
-                libraries."logback-ext-spring",
 
                 // JSON
                 libraries."fastjson",
+                libraries."jackson",
 
                 // Apache
+                libraries."commons-io",
+                libraries."commons-fileupload",
+                libraries."commons-beanutils",
                 libraries."commons-lang3",
+
+                //qCloud
+                libraries."cos-api",
+
+                //redis
+                libraries."spring-data-redis",
+                libraries."jedis",
         )
 
         testCompile (
