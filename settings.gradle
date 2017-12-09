@@ -1,6 +1,6 @@
 rootProject.name = 'ToyHolic'
 include 'web'
-include 'core'
+include 'service'
 include 'common'
-include 'shiro'
+include 'authority'
 

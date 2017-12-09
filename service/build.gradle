@@ -1,0 +1,23 @@
+import com.ywc.Generator
+
+archivesBaseName = 'service'
+
+buildscript {
+    dependencies {
+        classpath files ('/libs/script/MybatisGeneatorUtil-1.5-SNAPSHOT.jar')
+    }
+}
+
+dependencies {
+    compile project(":common")
+}
+
+//生成Dao文件
+task generateMyBatisDao {
+    doLast {
+        println '开始生成Dao文件...'
+        new Generator(false)//不写false会悲剧不信你试试
+                .generator(project.projectDir.toString()+"/src/main/resources/generatorConfig.xml")
+        println '生成Dao文件成功！'
+    }
+}

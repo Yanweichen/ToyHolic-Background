@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ywc.dao.AuthorityGroupMapper">
+  <resultMap id="BaseResultMap" type="com.ywc.model.AuthorityGroup">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="AUTHORITY_GROUP_ID" jdbcType="INTEGER" property="authorityGroupId" />
+    <result column="AUTHORITY_GROUP_NAME" jdbcType="VARCHAR" property="authorityGroupName" />
+  </resultMap>
+</mapper>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ywc.dao.AuthorityMapper">
+  <resultMap id="BaseResultMap" type="com.ywc.model.Authority">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="AUTHORITY_ID" jdbcType="INTEGER" property="authorityId" />
+    <result column="RESOURCE_ID" jdbcType="INTEGER" property="resourceId" />
+    <result column="OPERATION_ID" jdbcType="INTEGER" property="operationId" />
+    <result column="AUTHORITY_PARENT_ID" jdbcType="INTEGER" property="authorityParentId" />
+    <result column="AUTHORITY_STATUS" jdbcType="INTEGER" property="authorityStatus" />
+  </resultMap>
+
+  <resultMap id="AuthorityDTOMap" type="com.ywc.model.dto.AuthorityDTO">
+    <id column="AUTHORITY_ID" jdbcType="INTEGER" property="authorityId" />
+    <result column="AUTHORITY_PARENT_ID" jdbcType="INTEGER" property="authorityParentId" />
+    <result column="RESOURCE_NAME" jdbcType="INTEGER" property="resourceName" />
+    <result column="OPERATION_NAME" jdbcType="INTEGER" property="operationName" />
+  </resultMap>
+
+  <select id="selectUserAuthority" resultMap="AuthorityDTOMap">
+      SELECT
+        T_AUTHORITY.AUTHORITY_ID,
+        T_AUTHORITY.AUTHORITY_PARENT_ID,
+        T_RESOURCE.RESOURCE_NAME,
+        T_OPERATION.OPERATION_NAME
+      FROM
+        T_USER,
+        T_USER_ROLE,
+        T_ROLE_AUTHORITY_GROUP,
+        T_AUTHORITY,
+        T_AUTHORITY_GROUP,
+        T_AUTHORITY_GROUP_RELEVANCE,
+        T_OPERATION,
+        T_RESOURCE
+      WHERE
+        T_USER.USER_ID = #{userId}
+        AND T_USER.USER_ID = T_USER_ROLE.USER_ID
+        AND T_USER_ROLE.ROLE_ID = T_ROLE_AUTHORITY_GROUP.ROLE_ID
+        AND T_ROLE_AUTHORITY_GROUP.AUTHORITY_GROUP_ID = T_AUTHORITY_GROUP.AUTHORITY_GROUP_ID
+        AND T_ROLE_AUTHORITY_GROUP.AUTHORITY_GROUP_ID = T_AUTHORITY_GROUP_RELEVANCE.AUTHORITY_GROUP_ID
+        AND T_AUTHORITY_GROUP_RELEVANCE.AUTHORITY_ID = T_AUTHORITY.AUTHORITY_ID
+        AND T_AUTHORITY.RESOURCE_ID = T_RESOURCE.RESOURCE_ID
+        AND T_AUTHORITY.OPERATION_ID = T_OPERATION.OPERATION_ID
+        AND NOT EXISTS (
+                SELECT
+                  1
+                FROM
+                  T_USER_AUTHORITY
+                WHERE
+                  T_USER_AUTHORITY.USER_ID = T_USER.USER_ID
+                  AND T_AUTHORITY.AUTHORITY_ID = T_USER_AUTHORITY.AUTHORITY_ID
+                  AND T_USER_AUTHORITY.USER_AUTHORITY_STATUS = 0
+        )
+        AND NOT EXISTS (
+                SELECT
+                  1
+                FROM
+                  T_ROLE_AUTHORITY
+                WHERE
+                  T_ROLE_AUTHORITY.ROLE_ID = T_USER_ROLE.ROLE_ID
+                  AND T_AUTHORITY.AUTHORITY_ID = T_ROLE_AUTHORITY.AUTHORITY_ID
+                  AND T_ROLE_AUTHORITY.ROLE_AUTHORITY_STATUS = 0
+        )
+      UNION
+      SELECT
+        T_AUTHORITY.AUTHORITY_ID,
+        T_AUTHORITY.AUTHORITY_PARENT_ID,
+        T_RESOURCE.RESOURCE_NAME,
+        T_OPERATION.OPERATION_NAME
+      FROM
+        T_USER,
+        T_USER_ROLE,
+        T_ROLE_AUTHORITY,
+        T_AUTHORITY,
+        T_OPERATION,
+        T_RESOURCE
+      WHERE
+        T_USER.USER_ID = #{userId}
+        AND T_USER.USER_ID = T_USER_ROLE.USER_ID
+        AND T_USER_ROLE.ROLE_ID = T_ROLE_AUTHORITY.ROLE_ID
+        AND T_ROLE_AUTHORITY.AUTHORITY_ID = T_AUTHORITY.AUTHORITY_ID
+        AND T_ROLE_AUTHORITY.ROLE_AUTHORITY_STATUS = 1
+        AND T_AUTHORITY.RESOURCE_ID = T_RESOURCE.RESOURCE_ID
+        AND T_AUTHORITY.OPERATION_ID = T_OPERATION.OPERATION_ID
+      UNION
+      SELECT
+        T_AUTHORITY.AUTHORITY_ID,
+        T_AUTHORITY.AUTHORITY_PARENT_ID,
+        T_RESOURCE.RESOURCE_NAME,
+        T_OPERATION.OPERATION_NAME
+      FROM
+        T_USER,
+        T_USER_AUTHORITY,
+        T_AUTHORITY,
+        T_OPERATION,
+        T_RESOURCE
+      WHERE
+        T_USER.USER_ID = #{userId}
+        AND T_USER.USER_ID = T_USER_AUTHORITY.USER_ID
+        AND T_USER_AUTHORITY.AUTHORITY_ID = T_AUTHORITY.AUTHORITY_ID
+        AND T_USER_AUTHORITY.USER_AUTHORITY_STATUS = 1
+        AND T_AUTHORITY.RESOURCE_ID = T_RESOURCE.RESOURCE_ID
+        AND T_AUTHORITY.OPERATION_ID = T_OPERATION.OPERATION_ID
+  </select>
+
+    <select id="selectRoleAuthority" resultMap="AuthorityDTOMap">
+        SELECT
+            T_AUTHORITY.AUTHORITY_ID,
+            T_AUTHORITY.AUTHORITY_PARENT_ID,
+            T_RESOURCE.RESOURCE_NAME,
+            T_OPERATION.OPERATION_NAME
+        FROM
+            T_ROLE_AUTHORITY_GROUP,
+            T_AUTHORITY,
+            T_AUTHORITY_GROUP,
+            T_AUTHORITY_GROUP_RELEVANCE,
+            T_OPERATION,
+            T_RESOURCE
+        WHERE
+            T_ROLE_AUTHORITY_GROUP.ROLE_ID = #{roleId}
+            AND T_ROLE_AUTHORITY_GROUP.AUTHORITY_GROUP_ID = T_AUTHORITY_GROUP.AUTHORITY_GROUP_ID
+            AND T_ROLE_AUTHORITY_GROUP.AUTHORITY_GROUP_ID = T_AUTHORITY_GROUP_RELEVANCE.AUTHORITY_GROUP_ID
+            AND T_AUTHORITY_GROUP_RELEVANCE.AUTHORITY_ID = T_AUTHORITY.AUTHORITY_ID
+            AND T_AUTHORITY.RESOURCE_ID = T_RESOURCE.RESOURCE_ID
+            AND T_AUTHORITY.OPERATION_ID = T_OPERATION.OPERATION_ID
+            AND NOT EXISTS (
+                    SELECT
+                        1
+                    FROM
+                        T_ROLE_AUTHORITY
+                    WHERE
+                        T_ROLE_AUTHORITY.ROLE_ID = T_ROLE_AUTHORITY_GROUP.ROLE_ID
+                        AND T_AUTHORITY.AUTHORITY_ID = T_ROLE_AUTHORITY.AUTHORITY_ID
+                        AND T_ROLE_AUTHORITY.ROLE_AUTHORITY_STATUS = 0
+            )
+        UNION
+        SELECT
+            T_AUTHORITY.AUTHORITY_ID,
+            T_AUTHORITY.AUTHORITY_PARENT_ID,
+            T_RESOURCE.RESOURCE_NAME,
+            T_OPERATION.OPERATION_NAME
+        FROM
+            T_ROLE_AUTHORITY,
+            T_AUTHORITY,
+            T_OPERATION,
+            T_RESOURCE
+        WHERE
+            T_ROLE_AUTHORITY.ROLE_ID = #{roleId}
+            AND T_ROLE_AUTHORITY.AUTHORITY_ID = T_AUTHORITY.AUTHORITY_ID
+            AND T_ROLE_AUTHORITY.ROLE_AUTHORITY_STATUS = 1
+            AND T_AUTHORITY.RESOURCE_ID = T_RESOURCE.RESOURCE_ID
+            AND T_AUTHORITY.OPERATION_ID = T_OPERATION.OPERATION_ID
+    </select>
+</mapper>

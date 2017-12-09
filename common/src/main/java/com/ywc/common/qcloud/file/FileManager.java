@@ -17,7 +17,7 @@ public class FileManager {
 
     private static final QCloudManager Q_CLOUD_MANAGER = new QCloudManager();
 
-    private static final String BUCKET_NAME = PropertyUtil.getCtxProp("qcloud_cos_bucketName");
+    private static final String BUCKET_NAME = PropertyUtil.getProperty("qcloud_cos_bucketName");
 
     public static FileResult upload(byte[] file, String remotePath){
         UploadFileRequest uploadFileRequest = new UploadFileRequest(BUCKET_NAME,remotePath,file);

@@ -26,11 +26,7 @@ public class PropertyUtil extends PropertyPlaceholderConfigurer {
         }
     }
 
-    public static String getCtxProp(String name) {
+    public static String getProperty(String name) {
         return ctxPropMap.get(name);
-    }
-
-    public static Map<String, String> getCtxPropMap() {
-        return ctxPropMap;
     }
 }
